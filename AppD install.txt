@@ -1,0 +1,351 @@
+AppD install
++++++++++++++
+
+LabArtifacts Zip file
+======================
+
+[root@ip-172-31-15-183 ~]# cd /opt
+
+[root@ip-172-31-15-183 opt]# mkdir appdynamics
+
+[root@ip-172-31-15-183 opt]# cd appdynamics
+
+[root@ip-172-31-15-183 appD]# mkdir lab-artifacts
+
+[root@ip-172-31-15-183 appD]# cd lab-artifacts/
+
+[root@ip-172-31-15-183 lab-artifacts]# ls
+
+[root@ip-172-31-15-183 lab-artifacts]# sudo yum install -y wget
+
+[root@ip-172-31-15-183 lab-artifacts]# wget https://povplaybook.appdpartnerlabs.net/zip/lab-artifacts.zip
+
+--2023-12-16 10:31:36--  https://povplaybook.appdpartnerlabs.net/zip/lab-artifacts.zip
+Resolving povplaybook.appdpartnerlabs.net (povplaybook.appdpartnerlabs.net)... 108.158.61.81, 108.158.61.84, 108.158.61.89, ...
+Connecting to povplaybook.appdpartnerlabs.net (povplaybook.appdpartnerlabs.net)|108.158.61.81|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 18940516 (18M) [application/x-zip-compressed]
+Saving to: ‘lab-artifacts.zip’
+
+lab-artifacts.zip                       100%[=============================================================================>]  18.06M  --.-KB/s    in 0.1s
+
+2023-12-16 10:31:38 (127 MB/s) - ‘lab-artifacts.zip’ saved [18940516/18940516]
+
+[root@ip-172-31-15-183 lab-artifacts]# ls
+lab-artifacts.zip
+
+[root@ip-172-31-15-183 lab-artifacts]# yum install -y unzip
+
+[root@ip-172-31-15-183 lab-artifacts]# unzip -q lab-artifacts.zip -d .
+
+[root@ip-172-31-15-183 lab-artifacts]# ls
+app-war-file  db-scripts  lab-artifacts.zip  machineagent  phantomjs
+
+[root@ip-172-31-15-183 lab-artifacts]#
+
+JAVA install 
+==============
+
+[root@ip-172-31-15-183 ~]# yum install -y java-1.8.0
+
+[root@ip-172-31-15-183 ~]# java -version
+
+openjdk version "1.8.0_392"
+OpenJDK Runtime Environment (build 1.8.0_392-b08)
+OpenJDK 64-Bit Server VM (build 25.392-b08, mixed mode)
+
+[root@ip-172-31-15-183 ~]#
+
+
+
+
+MySQL Install
+++++++++++++++
+
+yum update -y
+
+wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+
+wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+
+
+sudo rpm -ivh mysql57-community-release-el7-9.noarch.rpm 
+
+sudo yum install -y mysql-server
+
+
+
+[root@ip-172-31-15-183 appD]# yum update -y
+
+
+[root@ip-172-31-15-183 appD]# wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+
+--2023-12-16 11:02:29--  https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+Resolving dev.mysql.com (dev.mysql.com)... 23.47.234.151, 2600:140f:1e00:486::2e31, 2600:140f:1e0
+
+
+[root@ip-172-31-15-183 appD]# ls
+
+lab-artifacts  mysql57-community-release-el7-9.noarch.rpm
+
+[root@ip-172-31-15-183 appD]# sudo rpm -ivh mysql57-community-release-el7-9.noarch.rpm
+
+warning: mysql57-community-release-el7-9.noarch.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:mysql57-community-release-el7-9  ################################# [100%]
+
+[root@ip-172-31-15-183 appD]# sudo yum install -y mysql-server
+
+Updating Subscription Management repositories.
+
+
+
+sudo systemctl start mysqld
+
+service mysqld status
+
+[root@ip-172-31-40-91 lab-artifacts]# sudo systemctl start mysqld
+
+[root@ip-172-31-40-91 lab-artifacts]# service mysqld status
+
+Redirecting to /bin/systemctl status mysqld.service
+● mysqld.service - MySQL 8.0 database server
+     Loaded: loaded (/usr/lib/systemd/system/mysqld.service; disabled; preset: disabled)
+     Active: active (running) since Sat 2023-12-16 15:25:01 UTC; 14s ago
+    Process: 51736 ExecStartPre=/usr/libexec/mysql-check-socket (code=exited, status=0/SUCCESS)
+    Process: 51758 ExecStartPre=/usr/libexec/mysql-prepare-db-dir mysqld.service (code=exited, status=0/SUCCESS)
+   Main PID: 51833 (mysqld)
+     Status: "Server is operational"
+      Tasks: 39 (limit: 48596)
+     Memory: 457.2M
+        CPU: 3.884s
+     CGroup: /system.slice/mysqld.service
+             └─51833 /usr/libexec/mysqld --basedir=/usr
+
+Dec 16 15:24:53 ip-172-31-40-91.ap-south-1.compute.internal systemd[1]: Starting MySQL 8.0 database server...
+Dec 16 15:24:53 ip-172-31-40-91.ap-south-1.compute.internal mysql-prepare-db-dir[51758]: Initializing MySQL database
+Dec 16 15:25:01 ip-172-31-40-91.ap-south-1.compute.internal systemd[1]: Started MySQL 8.0 database server.
+[root@ip-172-31-40-91 lab-artifacts]#
+
+setup password
+++++++++++++++++
+
+sudo grep 'temporary password' /var/log/mysql/mysqld.log
+
+sudo grep 'password' /var/log/mysql/mysqld.log
+
+mysql_secure_installation 
+
+New password: Welcome@1
+
+New password: 
+
+[root@ip-172-31-40-91 mysql]# grep 'password' /var/log/mysql/mysqld.log
+
+2023-12-16T15:24:56.334661Z 6 [Warning] [MY-010453] [Server] root@localhost is created with an empty password ! Please consider switching off the --initialize-insecure option.
+
+[root@ip-172-31-40-91 mysql]#
+
+
+
+
+
+[root@ip-172-31-40-91 lab-artifacts]# mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Connecting to MySQL using a blank password.
+
+VALIDATE PASSWORD COMPONENT can be used to test passwords
+and improve security. It checks the strength of password
+and allows the users to set only those passwords which are
+secure enough. Would you like to setup VALIDATE PASSWORD component?
+
+Press y|Y for Yes, any other key for No: y
+
+There are three levels of password validation policy:
+
+LOW    Length >= 8
+MEDIUM Length >= 8, numeric, mixed case, and special characters
+STRONG Length >= 8, numeric, mixed case, special characters and dictionary                  file
+
+Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 1
+Please set the password for root here.
+
+New password: Welcome@1 ---> password not display
+
+Re-enter new password: Welcome@1
+
+Estimated strength of the password: 100
+Do you wish to continue with the password provided?(Press y|Y for Yes, any other key for No) : y
+By default, a MySQL installation has an anonymous user,
+allowing anyone to log into MySQL without having to have
+a user account created for them. This is intended only for
+testing, and to make the installation go a bit smoother.
+You should remove them before moving into a production
+environment.
+
+Remove anonymous users? (Press y|Y for Yes, any other key for No) : n
+
+ ... skipping.
+
+
+Normally, root should only be allowed to connect from
+'localhost'. This ensures that someone cannot guess at
+the root password from the network.
+
+Disallow root login remotely? (Press y|Y for Yes, any other key for No) : n
+
+ ... skipping.
+By default, MySQL comes with a database named 'test' that
+anyone can access. This is also intended only for testing,
+and should be removed before moving into a production
+environment.
+
+
+Remove test database and access to it? (Press y|Y for Yes, any other key for No) : n
+
+ ... skipping.
+Reloading the privilege tables will ensure that all changes
+made so far will take effect immediately.
+
+Reload privilege tables now? (Press y|Y for Yes, any other key for No) : y
+Success.
+
+All done!
+[root@ip-172-31-40-91 lab-artifacts]#
+
+Run db_scripts
+++++++++++++++++
+
+cd /opt/appdynamics/lab-artifacts/db-scripts
+
+Welcome@1
+
+mysql -u root -pWelcome@1 < mysql-01.sql
+mysql -u root -pWelcome@1 < mysql-02.sql
+mysql -u root -pWelcome@1 < mysql-03.sql
+
+mysql -u root -pWelcome1! < mysql-04.sql
+
+[root@ip-172-31-40-91 db-scripts]# mysql -u root -pWelcome@1 < mysql-01.sql
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1193 (HY000) at line 1: Unknown system variable 'query_cache_size'
+[root@ip-172-31-40-91 db-scripts]# mysql -u root -pWelcome@1 < mysql-02.sql
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1049 (42000) at line 1: Unknown database 'supercars'
+[root@ip-172-31-40-91 db-scripts]# ls
+mysql-01.sql  mysql-02.sql  mysql-03.sql
+[root@ip-172-31-40-91 db-scripts]# mysql -u root -pWelcome@1 < mysql-03.sql
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1049 (42000) at line 1: Unknown database 'supercars'
+
+[root@ip-172-31-40-91 db-scripts]# mysql -u root -pWelcome@1 < mysql-04.sql
+-bash: mysql-04.sql: No such file or directory
+
+[root@ip-172-31-40-91 db-scripts]#
+
+
+Tomcat9 install
+================
+
+cd /usr/local
+
+sudo mkdir apache
+
+cd /usr/local/apache
+
+sudo wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.tar.gz
+
+sudo tar -zxpvf apache-tomcat-9.0.65.tar.gz -C /usr/local/apache
+
+
+sudo chown -R [your-os-user]:[your-os-group] /usr/local/apache  (if user created less previlazus that user we have to use in org level)
+
+mv apache-tomcat-9.0.65 apache-tomcat-9
+
+echo "export CATALINA_HOME='/usr/local/apache/apache-tomcat-9/'" >> ~/.bashrc
+
+source ~/.bashrc
+
+
+[root@ip-172-31-40-91 lab-artifacts]# echo "export CATALINA_HOME='/usr/local/apache/apache-tomcat-9/'" >> ~/.bashrc
+[root@ip-172-31-40-91 lab-artifacts]# cat ~/.bashrc
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+export CATALINA_HOME='/usr/local/apache/apache-tomcat-9/'
+[root@ip-172-31-40-91 lab-artifacts]#
+
+[root@ip-172-31-40-91 lab-artifacts]# source ~/.bashrc
+
+
+vi tomcat-users.xml
+
+<user username="admin" password="admin1234" roles="admin-gui, manager-gui, manager-script"/>
+
+<user username="admin" password="admin1234" roles="manager-gui"/>
+
+vi /opt/apache-tomcat-9.0.65/webapps/manager/META-INF/context.xml
+
+comment:
+  <!-- Valve className="org.apache.catalina.valves.RemoteAddrValve"
+  allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+
+start
+
+
+
+Install Phantomjs v2.1.1 not completed 
+========================================
+
+cd /tmp
+
+sudo yum install glibc fontconfig freetype freetype-devel fontconfig-devel
+
+wget bzip2
+
+cd /tmp
+
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+
+cd /tmp
+
+sudo tar -xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/
+
+sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs/usr/local/bin
+
+phantomjs --version
+
+
+[root@ip-172-31-40-91 tmp]# sudo tar -xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/
+
+tar (child): bzip2: Cannot exec: No such file or directory
+tar (child): Error is not recoverable: exiting now
+tar: Child returned status 2
+tar: Error is not recoverable: exiting now
+
+[root@ip-172-31-40-91 tmp]#
+

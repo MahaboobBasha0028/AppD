@@ -1,0 +1,71 @@
+AppD
+======
+
+unzip -q <source_folder> -d <destination_folder>
+
+to monitor any application basicaly to check weather the serve is up and down or any
+other things happen so we do get alerts and we taken a reaction on it.
+
+Basically monitoring is a process of collection of data and then analysing it we use our relavent purposes which is alarting to know if there are any performance breaches is there.
+
+Reactive Monitoring
+Proactive Monitoring
+
+AppD will support both types.
+
+
+Diff types of monitoring
+
+Infrastructure Monitoring	---> OS level of your hosts
+DB Monitoring			---> performance of db queries
+App Monitoring			---> URL availability, servives, process etc
+Network Monitoring 		---> Switch, lb's routers, proxy/mwg, through put.
+Synthetic Monitoring/ end user  ---> real user
+
+
+Agent Based
+Agent less
+
+Agent Based - Piece of software - collect more data / reliable - some overhead
+Agent less  - remote - specific / less reliable - less overhead
+
+
+=====================================
+
+sudo su -
+
+cd /opt
+
+mkdir appdynamics
+
+cd /opt/appdynamics 
+
+mkdir lab-artifacts
+
+sudo yum install wget
+
+wget https://povplaybook.appdpartnerlabs.net/zip/lab-artifacts.zip
+
+yum update -y
+
+
+unzip -q lab-artifacts.zip -d .
+
+Javainstall
+
+yum install -y java-1.8.0
+
+
+MySQL install
+
+
+
+
+
+
+
+
+
+
+
+

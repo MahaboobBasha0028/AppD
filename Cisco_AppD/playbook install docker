@@ -1,0 +1,54 @@
+---
+- name: Install Docker
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Install required dependencies
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+
+    - name: Add Docker repository
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install Docker
+      yum:
+        name: docker-ce
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
+- name: Install Docker Compose
+  hosts: localhost
+  become: true  # Run tasks with sudo
+
+  tasks:
+    - name: Download Docker Compose binary
+      get_url:
+        url: "https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ 'x86_64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+        dest: "/usr/local/bin/docker-compose"
+        mode: "u+x,g+x"
+
+    - name: Add symbolic link to docker-compose
+      file:
+        src: "/usr/local/bin/docker-compose"
+        dest: "/usr/bin/docker-compose"
+        state: link
+
+    - name: Verify Docker Compose installation
+      command: "docker-compose --version"
+      register: compose_version_output
+      ignore_errors: yes
+
+    - name: Print Docker Compose version
+      debug:
+        var: compose_version_output.stdout_lines
+
